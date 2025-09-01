@@ -1,0 +1,69 @@
+﻿@model List<qrmenu.Models.Product>
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+<h2>Ürünler</h2>
+
+<a class="btn btn-primary mb-3" asp-action="Create">Yeni Ürün</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Ad</th>
+            <th>Fiyat</th>
+            <th>Açıklama</th>
+            <th>Kategori</th>
+            <th>Resim</th>
+            <th>Durum</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Price ₺</td>
+                <td>@item.Description</td>
+                <td>@item.Category?.Name</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="@item.ImageUrl" width="100" />
+                    }
+                </td>
+                <td>
+                    @if (item.IsActive)
+                    {
+                        <span class="badge bg-success">Aktif</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Pasif</span>
+                    }
+                </td>
+
+                <td>
+                    <div class="d-flex gap-1">
+                        <form asp-action="ToggleStatus" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-sm @(item.IsActive ? "btn-danger" : "btn-success")">
+                                @(item.IsActive ? "Pasif Yap" : "Aktif Yap")
+                            </button>
+                        </form>
+
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Düzenle</a>
+
+                        <form asp-action="Delete" method="post" asp-route-id="@item.Id" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('Silmek istediğinize emin misiniz?');">
+                                Sil
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

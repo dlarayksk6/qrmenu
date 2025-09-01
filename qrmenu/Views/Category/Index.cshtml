@@ -1,0 +1,64 @@
+﻿@model List<qrmenu.Models.Category>
+
+<h2>Kategoriler</h2>
+
+
+<form asp-action="AddCategory" method="post" enctype="multipart/form-data" class="mb-3">
+    <div class="mb-2">
+        <input type="text" name="name" class="form-control" placeholder="Yeni kategori adı" required />
+    </div>
+    <div class="mb-2">
+        <label for="imageFile" class="form-label">Kategori Resmi</label>
+        <input type="file" name="imageFile" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-success">Ekle</button>
+</form>
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>İsim</th>
+            <th>Resim</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="@item.ImageUrl" alt="Kategori Resmi" width="50" height="50" />
+                    }
+                </td>
+              
+
+                <td>
+                    <a asp-action="EditCategory" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Düzenle</a>
+
+                    <form asp-action="DeleteCategory" method="post" asp-route-id="@item.Id" onsubmit="return confirm('Silinsin mi?');" style="display:inline-block;">
+                        <button class="btn btn-danger btn-sm" type="submit">Sil</button>
+                    </form>
+                </td>
+
+                <td>
+                    <form asp-action="MoveUp" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button class="btn btn-sm btn-outline-primary">Yukarı</button>
+                    </form>
+                    <form asp-action="MoveDown" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button class="btn btn-sm btn-outline-secondary">Aşağı</button>
+                    </form>
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>

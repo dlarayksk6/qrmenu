@@ -1,0 +1,5 @@
+﻿@using qrmenu
+@using qrmenu.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
+ViewBag.RestaurantLogo = restaurant?.LogoUrl;

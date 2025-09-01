@@ -1,0 +1,189 @@
+﻿@{
+    var categories = ViewBag.Categories as List<qrmenu.Models.Category>;
+    string restaurantLogo = ViewBag.RestaurantLogo as string;
+    string facebookUrl = ViewBag.FacebookUrl as string;
+    string instagramUrl = ViewBag.InstagramUrl as string;
+    Layout = null;
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #fff;
+        color: #222;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+
+    .restaurant-logo {
+        text-align: center;
+        margin: 30px 0;
+    }
+
+        .restaurant-logo img {
+            height: 140px;
+            width: auto;
+        }
+
+    
+    .social-icons {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+        .social-icons a {
+            margin: 0 15px;
+            color: #2b2a29;
+            font-size: 45px;
+            transition: color .3s;
+        }
+
+            .social-icons a:hover {
+                color: #d4a373;
+            }
+
+    
+    .page-container {
+        flex: 1;
+        display: flex;
+        padding: 20px;
+        gap: 20px;
+    }
+
+  
+    .category-list {
+        flex: 0 0 25%;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        
+        overflow-y: auto;
+        position: sticky;
+        top: 20px;
+    }
+
+    .category-item {
+        text-decoration: none;
+        height:270px;
+        color: inherit;
+        overflow: hidden;
+        border-radius: 8px;
+        position: relative;
+        display: block;
+    }
+
+        .category-item img {
+            width: 100%;
+            height: 270px; 
+            object-fit: cover;
+            display: block;
+            border-radius: 8px;
+        }
+
+    .category-details {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgb(50,50,50); 
+        padding: 12px 25px;
+        border-radius: 6px;
+        width: 70%;
+        text-align: center;
+    }
+
+    .category-name {
+        font-size: 25px;
+        font-weight: 600;
+        color: #fff;
+        margin: 0;
+        text-transform: uppercase;
+        text-align:left;
+    }
+
+    
+
+
+    @@media (max-width: 768px) {
+        .page-container
+
+    {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .category-list {
+        flex: 1 1 100%;
+        position: relative;
+        top: 0;
+        max-height: none;
+    }
+
+    .category-item img {
+        height: auto;
+    }
+
+    .category-name {
+        font-size: 16px;
+    }
+
+    }
+
+    
+    .site-footer {
+        text-align: left;
+        
+        padding: 20px 0;
+        background-color: black;
+        color: white;
+        font-size: 14px;
+        margin-top: auto;
+    }
+</style>
+
+@if (!string.IsNullOrEmpty(restaurantLogo))
+{
+    <div class="restaurant-logo">
+        <img src="@restaurantLogo" alt="Restoran Logo" />
+    </div>
+    <div class="social-icons">
+        @if (!string.IsNullOrEmpty(facebookUrl))
+        {
+            <a href="@facebookUrl" target="_blank"><i class="fab fa-facebook-square"></i></a>
+        }
+        @if (!string.IsNullOrEmpty(instagramUrl))
+        {
+            <a href="@instagramUrl" target="_blank"><i class="fab fa-instagram-square"></i></a>
+        }
+    </div>
+}
+
+<div class="page-container">
+    <div class="category-list">
+        @foreach (var cat in categories)
+        {
+            <a asp-action="Products" asp-route-categoryId="@cat.Id" class="category-item">
+                <img src="@cat.ImageUrl" alt="@cat.Name" />
+                <div class="category-details">
+                    <div class="category-name">@cat.Name</div>
+                </div>
+            </a>
+        }
+    </div>
+
+   
+</div>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>© by THEMARINE</p>
+    </div>
+</footer>

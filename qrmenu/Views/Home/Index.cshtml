@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "Panel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .small-box .inner {
+        
+        font-size: 25;
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+        justify-content: center;
+        text-align: center; 
+        height: 100%; 
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>@ViewBag.CategoryCount</h3>
+                <p>Kategori Sayısı</p>
+            </div>
+           
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>@ViewBag.ProductCount</h3>
+                <p>Ürün Sayısı</p>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>@ViewBag.PassiveProductCount</h3>
+                <p>Pasif Ürün Sayısı</p>
+            </div>
+           
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-primary">
+            <div class="inner">
+                <h3>@ViewBag.DailyTotalClicks</h3>
+                <p>Günlük Tıklama</p>
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Günlük Tıklama</h3>
+    </div>
+    <div class="card-body">
+        <canvas id="dailyScanChart" style="height:180px;"></canvas>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Günlük Saat Bazlı Tıklama</h3>
+    </div>
+    <div class="card-body">
+        <canvas id="hourlyScanChart" style="height:180px;"></canvas>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Haftalık Tıklama</h3>
+    </div>
+    <div class="card-body">
+        <canvas id="weeklyChart" style="height:180px;"></canvas>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        };
+
+        new Chart(document.getElementById('dailyScanChart'), {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.GeneralDailyLabels)),
+                datasets: [{
+                    label: 'Tıklama',
+                    data: @Html.Raw(Json.Serialize(ViewBag.GeneralDailyCounts)),
+                    borderColor: 'rgba(75,192,192,1)',
+                    backgroundColor: 'rgba(75,192,192,0.2)',
+                    tension: 0.3
+                }]
+            },
+            options: options
+        });
+
+        new Chart(document.getElementById('hourlyScanChart'), {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.GeneralHourLabels)),
+                datasets: [{
+                    label: 'Tıklama',
+                    data: @Html.Raw(Json.Serialize(ViewBag.GeneralHourlyCounts)),
+                    borderColor: 'rgba(255,99,132,1)',
+                    backgroundColor: 'rgba(255,99,132,0.2)',
+                    tension: 0.3
+                }]
+            },
+            options: options
+        });
+
+        new Chart(document.getElementById('weeklyChart'), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.GeneralWeeklyLabels)),
+                datasets: [{
+                    label: 'Tıklama',
+                    data: @Html.Raw(Json.Serialize(ViewBag.GeneralWeeklyCounts)),
+                    backgroundColor: 'rgba(54,162,235,0.5)',
+                    borderColor: 'rgba(54,162,235,1)',
+                    borderWidth: 1
+                }]
+            },
+            options: options
+        });
+    </script>
+}

@@ -1,0 +1,65 @@
+﻿@model qrmenu.Models.Product
+
+@{
+    ViewData["Title"] = "Yeni Ürün";
+    var categories = ViewBag.Categories as List<qrmenu.Models.Category>;
+}
+
+<h2>Yeni Ürün Ekle</h2>
+<form id="productForm" asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label class="form-label">Ürün Adı</label>
+        <input id="Name" asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Fiyat</label>
+        <input id="Price" asp-for="Price" class="form-control" type="number" step="0.01" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Açıklama</label>
+        <textarea id="Description" asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Kategori</label>
+        <select id="CategoryId" asp-for="CategoryId" class="form-control">
+            <option value="">Kategori seçin</option>
+            @foreach (var cat in categories)
+            {
+                <option value="@cat.Id">@cat.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Resim</label>
+        <input id="imageFile" type="file" name="imageFile" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Kaydet</button>
+</form>
+
+<script>
+    document.getElementById("productForm").addEventListener("submit", function (e) {
+        let errors = [];
+
+        if (!document.getElementById("Name").value.trim()) {
+            errors.push("Ürün adı boş olamaz!");
+        }
+        if (!document.getElementById("Price").value.trim()) {
+            errors.push("Fiyat boş olamaz!");
+        }
+   
+        if (!document.getElementById("CategoryId").value.trim()) {
+            errors.push("Kategori seçmelisiniz!");
+        }
+      
+
+        if (errors.length > 0) {
+            e.preventDefault();
+            alert(errors.join("\n"));
+        }
+    });
+</script>

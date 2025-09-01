@@ -1,0 +1,25 @@
+﻿@page
+@model Disable2faModel
+@{
+    ViewData["Title"] = "İki Faktörlü Doğrulamayı (2FA) Devre Dışı Bırak";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h3>@ViewData["Title"]</h3>
+
+<div class="alert alert-warning" role="alert">
+    <p>
+        <strong>Bu işlem sadece 2FA'yı devre dışı bırakır.</strong>
+    </p>
+    <p>
+        2FA'yı devre dışı bırakmak, doğrulayıcı uygulamalarda kullanılan anahtarları değiştirmez.
+        Doğrulayıcı uygulamanızda kullanılan anahtarı değiştirmek isterseniz, <a asp-page="./ResetAuthenticator">doğrulayıcı anahtarlarınızı sıfırlamalısınız.</a>
+    </p>
+</div>
+
+<div>
+    <form method="post">
+        <button class="btn btn-danger" type="submit">2FA'yı Devre Dışı Bırak</button>
+    </form>
+</div>

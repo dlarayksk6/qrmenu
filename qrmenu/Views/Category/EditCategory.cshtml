@@ -1,0 +1,22 @@
+﻿@model qrmenu.Models.Category
+
+<h2>Kategori Güncelle</h2>
+
+<form asp-action="EditCategory" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label class="form-label">Kategori Adı</label>
+        <input type="text" name="name" class="form-control" value="@Model.Name" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Yeni Resim</label>
+        <input type="file" name="imageFile" class="form-control" />
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" width="80" class="mt-2" />
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>
